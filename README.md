@@ -108,7 +108,7 @@ By defining the custom extensions on `IntentExtra`/`BundleExtra`, they will show
 Download
 --------
 
-Note that this is using [Kotlin 1.1 beta2](https://blog.jetbrains.com/kotlin/2017/02/kotlin-1-1-beta-2-is-here/).
+Note that this is using [Kotlin 1.1 RC](https://blog.jetbrains.com/kotlin/2017/02/kotlin-1-1-release-candidate-is-here/).
 
 Add the following to the `build.gradle`:
 
