@@ -28,21 +28,22 @@ interface PropertyDelegate<in This, T> {
  * @param extraWriter Writes the value to the receiver of type [This].
  * @param name An optional name for the property. If missing, a compile-time constant will be used equal to the qualified name of the class
  * in which the property is declared plus the real name of the property itself.
+ * @param customPrefix An optional prefix for the property name, to be used before the real name of the property.
+ * Note that this is ignored if [name] is present.
  */
 @PublishedApi internal inline fun <This, T, R> PropertyDelegate(
     crossinline extraReader: ExtraReader<This, R>,
     crossinline extraWriter: ExtraWriter<This, R>,
     crossinline typeReader: TypeReader<T, R>,
     crossinline typeWriter: TypeWriter<T, R>,
-    name: String? = null
+    name: String? = null,
+    customPrefix: String? = null
 ) = object : PropertyDelegate<This, T> {
 
     private lateinit var name: String private set
 
     override operator fun provideDelegate(thisRef: Any?, property: KProperty<*>) = apply {
-        this.name = name
-            ?: property.ownerCanonicalName?.let { "$it::${property.name}" }
-            ?: property.name
+        this.name = name ?: property.defaultDelegateName(customPrefix)
     }
 
     override fun getValue(thisRef: This, property: KProperty<*>): T =

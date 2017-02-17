@@ -20,12 +20,15 @@ typealias BundlePropertyDelegate<T> = PropertyDelegate<Bundle, T>
  * @param bundleWriter Writes the value to the [Bundle].
  * @param name An optional name for the [Bundle] extra. If missing, a compile-time constant will be used equal to the qualified name of the class
  * in which the property is declared plus the name of the property itself.
+ * @param customPrefix An optional prefix for the [Bundle] extra, to be used before the property name.
+ * Note that this is ignored if [name] is present.
  */
 inline fun <T, R> BundleExtra.Generic(
     crossinline bundleReader: ExtraReader<Bundle, R>,
     crossinline bundleWriter: ExtraWriter<Bundle, R>,
     crossinline typeReader: TypeReader<T, R>,
     crossinline typeWriter: TypeWriter<T, R>,
-    name: String? = null
+    name: String? = null,
+    customPrefix: String? = null
 ): BundlePropertyDelegate<T> =
-    PropertyDelegate(bundleReader, bundleWriter, typeReader, typeWriter, name)
+    PropertyDelegate(bundleReader, bundleWriter, typeReader, typeWriter, name, customPrefix)

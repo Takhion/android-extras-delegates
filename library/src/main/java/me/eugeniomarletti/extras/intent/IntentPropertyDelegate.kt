@@ -20,12 +20,15 @@ typealias IntentPropertyDelegate<T> = PropertyDelegate<Intent, T>
  * @param intentWriter Writes the value to the [Intent].
  * @param name An optional name for the [Intent] extra. If missing, a compile-time constant will be used equal to the qualified name of the class
  * in which the property is declared plus the name of the property itself.
+ * @param customPrefix An optional prefix for the [Intent] extra, to be used before the property name.
+ * Note that this is ignored if [name] is present.
  */
 inline fun <T, R> IntentExtra.Generic(
     crossinline intentReader: ExtraReader<Intent, R>,
     crossinline intentWriter: ExtraWriter<Intent, R>,
     crossinline typeReader: TypeReader<T, R>,
     crossinline typeWriter: TypeWriter<T, R>,
-    name: String? = null
+    name: String? = null,
+    customPrefix: String? = null
 ): IntentPropertyDelegate<T> =
-    PropertyDelegate(intentReader, intentWriter, typeReader, typeWriter, name)
+    PropertyDelegate(intentReader, intentWriter, typeReader, typeWriter, name, customPrefix)

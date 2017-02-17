@@ -1,9 +1,14 @@
+@file:Suppress("NOTHING_TO_INLINE")
+
 package me.eugeniomarletti.extras
 
 import kotlin.jvm.internal.CallableReference
 import kotlin.reflect.KClass
 import kotlin.reflect.KDeclarationContainer
 import kotlin.reflect.KProperty
+
+inline fun KProperty<*>.defaultDelegateName(customPrefix: String?, separator: String = "::") =
+    (customPrefix ?: ownerCanonicalName)?.let { it + separator + name } ?: name
 
 inline val KProperty<*>.ownerCanonicalName: String? get() = owner?.canonicalName
 inline val KProperty<*>.owner: KDeclarationContainer? get() = if (this is CallableReference) owner else null

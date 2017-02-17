@@ -10,35 +10,41 @@ import me.eugeniomarletti.extras.intent.IntentExtra
 inline fun <T> IntentExtra.ParcelableArray(
     crossinline reader: TypeReader<T, Array<Parcelable?>?>,
     crossinline writer: TypeWriter<T, Array<Parcelable?>?>,
-    name: String? = null
+    name: String? = null,
+    customPrefix: String? = null
 ) =
     Generic(
         Intent::getParcelableArrayExtra,
         Intent::putExtra,
         reader,
         writer,
-        name)
+        name,
+        customPrefix)
 
 inline fun <T> IntentExtra.CharSequenceArray(
     crossinline reader: TypeReader<T, Array<CharSequence?>?>,
     crossinline writer: TypeWriter<T, Array<CharSequence?>?>,
-    name: String? = null
+    name: String? = null,
+    customPrefix: String? = null
 ) =
     Generic(
         Intent::getCharSequenceArrayExtra,
         Intent::putExtra,
         reader,
         writer,
-        name)
+        name,
+        customPrefix)
 
 inline fun <T> IntentExtra.StringArray(
     crossinline reader: TypeReader<T, Array<String?>?>,
     crossinline writer: TypeWriter<T, Array<String?>?>,
-    name: String? = null
+    name: String? = null,
+    customPrefix: String? = null
 ) =
     Generic(
         Intent::getStringArrayExtra,
         Intent::putExtra,
         reader,
         writer,
-        name)
+        name,
+        customPrefix)

@@ -24,6 +24,7 @@ class SomeActivity : Activity() {
 `IntentExtra` and `BundleExtra` are two empty `object` which serve as containers for all delegates.
 
 If not specified, the name of the extra will be the fully qualified name of the containing class, followed by the property name (in the example: `"com.example.SomeActivity.IntentOptions::someExtra"`).
+It is also possible to specify a custom prefix instead of the fully qualified name of the class, which is useful when creating nested delegates (see below).
 
 If a default value is not specified, the returning type will be nullable.
 
@@ -80,11 +81,12 @@ import me.eugeniomarletti.extras.intent.IntentExtra
 import me.eugeniomarletti.extras.intent.base.String
 import org.joda.time.LocalDate
 
-fun IntentExtra.LocalDate(name: String? = null) =
+fun IntentExtra.LocalDate(name: String? = null, customPrefix: String? = null) =
     String(
         reader = { it?.let(LocalDate::parse) },
         writer = { it?.toString() },
-        name = name)
+        name = name,
+        customPrefix = customPrefix)
 ```
 
 Or in a `Bundle`:
@@ -94,11 +96,12 @@ import me.eugeniomarletti.extras.bundle.BundleExtra
 import me.eugeniomarletti.extras.bundle.base.String
 import org.joda.time.LocalDate
 
-fun BundleExtra.LocalDate(name: String? = null) =
+fun BundleExtra.LocalDate(name: String? = null, customPrefix: String? = null) =
     String(
         reader = { it?.let(LocalDate::parse) },
         writer = { it?.toString() },
-        name = name)
+        name = name,
+        customPrefix = customPrefix)
 ```
 
 The `reader` takes the persisted value in and outputs the custom type, while the `writer` does the opposite.
