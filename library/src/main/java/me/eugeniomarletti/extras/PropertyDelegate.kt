@@ -8,11 +8,14 @@ typealias TypeWriter<T, R> = (T) -> R
 typealias ExtraReader<This, R> = This.(name: String) -> R
 typealias ExtraWriter<This, R> = This.(name: String, value: R) -> Any?
 
+interface DelegateProvider<out T> {
+    operator fun provideDelegate(thisRef: Any?, property: KProperty<*>): T
+}
+
 /**
- * A property delegate that can read and write from a receiver of type [This], and has a name.
+ * A property delegate that can read and write from a receiver of type [This].
  */
-interface PropertyDelegate<in This, T> {
-    operator fun provideDelegate(thisRef: Any?, property: KProperty<*>): PropertyDelegate<This, T>
+interface PropertyDelegate<in This, T> : DelegateProvider<PropertyDelegate<This, T>> {
     operator fun getValue(thisRef: This, property: KProperty<*>): T
     operator fun setValue(thisRef: This, property: KProperty<*>, value: T)
 }
