@@ -108,6 +108,81 @@ The `reader` takes the persisted value in and outputs the custom type, while the
 
 By defining the custom extensions on `IntentExtra`/`BundleExtra`, they will show up together with the basic types in the IDE autocomplete.
 
+Nested types
+------------
+
+There are cases when a type is composed of multiple simpler types, like the following example:
+
+```kotlin
+data class User(val id: Long, val email: String, val birthDay: LocalDate)
+```
+
+It's possible to compose multiple delegates to create a single "super delegate" that can read/write such a type:
+
+```kotlin
+import android.content.Intent
+import me.eugeniomarletti.extras.DelegateProvider
+import me.eugeniomarletti.extras.defaultDelegateName
+import me.eugeniomarletti.extras.intent.IntentExtra
+import me.eugeniomarletti.extras.intent.base.Long
+import me.eugeniomarletti.extras.intent.base.String
+import kotlin.properties.ReadWriteProperty
+import kotlin.reflect.KProperty
+
+fun IntentExtra.User(
+    idName: String? = null,
+    emailName: String? = null,
+    birthdayName: String? = null,
+    customPrefix: String? = null)
+    =
+    object : DelegateProvider<ReadWriteProperty<Intent, User?>> {
+
+        override fun provideDelegate(thisRef: Any?, property: KProperty<*>) =
+
+            object : ReadWriteProperty<Intent, User?> {
+
+                private val namePrefix = property.defaultDelegateName(customPrefix)
+
+                private var Intent.id by IntentExtra.Long(name = idName, customPrefix = namePrefix)
+                private var Intent.email by IntentExtra.String(name = emailName, customPrefix = namePrefix)
+                private var Intent.birthday by IntentExtra.LocalDate(name = birthdayName, customPrefix = namePrefix)
+
+                override operator fun getValue(thisRef: Intent, property: KProperty<*>): User? {
+                    val id = thisRef.id ?: return null
+                    val email = thisRef.email ?: return null
+                    val birthday = thisRef.birthday ?: return null
+                    return User(id, email, birthday)
+                }
+
+                override operator fun setValue(thisRef: Intent, property: KProperty<*>, value: User?) {
+                    thisRef.id = value?.id
+                    thisRef.email = value?.email
+                    thisRef.birthday = value?.birthDay
+                }
+            }
+    }
+```
+
+An example usage could be:
+
+```kotlin
+package com.example
+
+object IntentOptions {
+    var Intent.currentUser by IntentExtra.User()
+}
+```
+
+This will read/write 3 extras:
+
+* `com.example.IntentOptions::currentUser::id` with type `Long`
+* `com.example.IntentOptions::currentUser::email` with type `String`
+* `com.example.IntentOptions::currentUser::birthday` with type `LocalDate`
+
+Note that this is made possible by passing a custom prefix for the nested property names, which is going to be the default delegate name for the "super delegate" (in this case `com.example.IntentOptions::user`).
+
+The extra names can also be specified explicitly if necessary.
+
 Download
 --------
 
