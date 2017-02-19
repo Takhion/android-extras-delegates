@@ -195,6 +195,6 @@ repositories {
     jcenter()
 }
 dependencies {
-    compile 'me.eugeniomarletti:android-extras-delegates:1.0.2'
+    compile 'me.eugeniomarletti:android-extras-delegates:1.0.3'
 }
 ```
