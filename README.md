@@ -40,7 +40,7 @@ fun test(intent: Intent) {
 ```
 
 Activity Companion
------------------
+------------------
 
 Optionally, you can use the provided [`ActivityCompanion`](https://github.com/Takhion/android-extras-delegates/blob/master/library/src/main/java/me/eugeniomarletti/extras/ActivityCompanion.kt#L21-L35) (or [`SimpleActivityCompanion`](/library/src/main/java/me/eugeniomarletti/extras/ActivityCompanion.kt#L10-L19) if you don't have any "intent options") to aid in creating intents for an `Activity`:
 
