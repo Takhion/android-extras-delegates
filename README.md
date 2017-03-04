@@ -186,7 +186,7 @@ The extra names can also be specified explicitly if necessary.
 Download
 --------
 
-Note that this is using [Kotlin 1.1 RC](https://blog.jetbrains.com/kotlin/2017/02/kotlin-1-1-release-candidate-is-here/).
+Note that this is using **Kotlin 1.1**.
 
 Add the following to the `build.gradle`:
 
