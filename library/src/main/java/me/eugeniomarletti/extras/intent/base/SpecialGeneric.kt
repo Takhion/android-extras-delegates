@@ -23,20 +23,6 @@ inline fun <T> IntentExtra.Bundle(
         name,
         customPrefix)
 
-inline fun <T> IntentExtra.Serializable(
-    crossinline reader: TypeReader<T, Serializable?>,
-    crossinline writer: TypeWriter<T, Serializable?>,
-    name: String? = null,
-    customPrefix: String? = null
-) =
-    Generic(
-        Intent::getSerializableExtra,
-        Intent::putExtra,
-        reader,
-        writer,
-        name,
-        customPrefix)
-
 inline fun <T> IntentExtra.CharSequence(
     crossinline reader: TypeReader<T, CharSequence?>,
     crossinline writer: TypeWriter<T, CharSequence?>,
@@ -73,6 +59,23 @@ inline fun <T, R : Parcelable> IntentExtra.Parcelable(
 ) =
     Generic(
         Intent::getParcelableExtra,
+        Intent::putExtra,
+        reader,
+        writer,
+        name,
+        customPrefix)
+
+inline fun <T, R : Serializable> IntentExtra.Serializable(
+    crossinline reader: TypeReader<T, R?>,
+    crossinline writer: TypeWriter<T, R?>,
+    name: String? = null,
+    customPrefix: String? = null
+) =
+    Generic(
+        { name ->
+            @Suppress("UNCHECKED_CAST")
+            getSerializableExtra(name) as? R?
+        },
         Intent::putExtra,
         reader,
         writer,

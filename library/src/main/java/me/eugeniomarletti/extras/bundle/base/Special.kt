@@ -8,12 +8,6 @@ import me.eugeniomarletti.extras.bundle.BundleExtra
 import me.eugeniomarletti.extras.bundle.BundlePropertyDelegate
 import java.io.Serializable
 
-inline fun BundleExtra.Serializable(name: String? = null, customPrefix: String? = null) =
-    Serializable({ it }, { it }, name, customPrefix)
-
-inline fun BundleExtra.Serializable(defaultValue: Serializable, name: String? = null, customPrefix: String? = null) =
-    Serializable({ it ?: defaultValue }, { it }, name, customPrefix)
-
 inline fun BundleExtra.Bundle(name: String? = null, customPrefix: String? = null) =
     Bundle({ it }, { it }, name, customPrefix)
 
@@ -39,3 +33,11 @@ inline fun <T : Parcelable>
 inline fun <T : Parcelable>
     BundleExtra.Parcelable(defaultValue: T, name: String? = null, customPrefix: String? = null): BundlePropertyDelegate<T> =
     Parcelable<T, T>({ it ?: defaultValue }, { it }, name, customPrefix)
+
+inline fun <T : Serializable>
+    BundleExtra.Serializable(name: String? = null, customPrefix: String? = null): BundlePropertyDelegate<T?> =
+    Serializable<T?, T>({ it }, { it }, name, customPrefix)
+
+inline fun <T : Serializable>
+    BundleExtra.Serializable(defaultValue: T, name: String? = null, customPrefix: String? = null): BundlePropertyDelegate<T> =
+    Serializable<T, T>({ it ?: defaultValue }, { it }, name, customPrefix)

@@ -22,20 +22,6 @@ inline fun <T> BundleExtra.Bundle(
         name,
         customPrefix)
 
-inline fun <T> BundleExtra.Serializable(
-    crossinline reader: TypeReader<T, Serializable?>,
-    crossinline writer: TypeWriter<T, Serializable?>,
-    name: String? = null,
-    customPrefix: String? = null
-) =
-    Generic(
-        Bundle::getSerializable,
-        Bundle::putSerializable,
-        reader,
-        writer,
-        name,
-        customPrefix)
-
 inline fun <T> BundleExtra.CharSequence(
     crossinline reader: TypeReader<T, CharSequence?>,
     crossinline writer: TypeWriter<T, CharSequence?>,
@@ -73,6 +59,23 @@ inline fun <T, R : Parcelable> BundleExtra.Parcelable(
     Generic(
         Bundle::getParcelable,
         Bundle::putParcelable,
+        reader,
+        writer,
+        name,
+        customPrefix)
+
+inline fun <T, R : Serializable> BundleExtra.Serializable(
+    crossinline reader: TypeReader<T, R?>,
+    crossinline writer: TypeWriter<T, R?>,
+    name: String? = null,
+    customPrefix: String? = null
+) =
+    Generic(
+        { name ->
+            @Suppress("UNCHECKED_CAST")
+            getSerializable(name) as? R?
+        },
+        Bundle::putSerializable,
         reader,
         writer,
         name,

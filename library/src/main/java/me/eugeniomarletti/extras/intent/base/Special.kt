@@ -8,12 +8,6 @@ import me.eugeniomarletti.extras.intent.IntentExtra
 import me.eugeniomarletti.extras.intent.IntentPropertyDelegate
 import java.io.Serializable
 
-inline fun IntentExtra.Serializable(name: String? = null, customPrefix: String? = null) =
-    Serializable({ it }, { it }, name, customPrefix)
-
-inline fun IntentExtra.Serializable(defaultValue: Serializable, name: String? = null, customPrefix: String? = null) =
-    Serializable({ it ?: defaultValue }, { it }, name, customPrefix)
-
 inline fun IntentExtra.Bundle(name: String? = null, customPrefix: String? = null) =
     Bundle({ it }, { it }, name, customPrefix)
 
@@ -39,3 +33,11 @@ inline fun <T : Parcelable>
 inline fun <T : Parcelable>
     IntentExtra.Parcelable(defaultValue: T, name: String? = null, customPrefix: String? = null): IntentPropertyDelegate<T> =
     Parcelable<T, T>({ it ?: defaultValue }, { it }, name, customPrefix)
+
+inline fun <T : Serializable>
+    IntentExtra.Serializable(name: String? = null, customPrefix: String? = null): IntentPropertyDelegate<T?> =
+    Serializable<T?, T>({ it }, { it }, name, customPrefix)
+
+inline fun <T : Serializable>
+    IntentExtra.Serializable(defaultValue: T, name: String? = null, customPrefix: String? = null): IntentPropertyDelegate<T> =
+    Serializable<T, T>({ it ?: defaultValue }, { it }, name, customPrefix)
