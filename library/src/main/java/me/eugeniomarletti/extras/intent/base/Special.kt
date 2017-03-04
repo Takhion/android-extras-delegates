@@ -37,5 +37,5 @@ inline fun <T : Parcelable>
     Parcelable<T?, T>({ it }, { it }, name, customPrefix)
 
 inline fun <T : Parcelable>
-    IntentExtra.Parcelable(defaultValue: T, name: String? = null, customPrefix: String? = null): IntentPropertyDelegate<T?> =
-    Parcelable<T?, T>({ it ?: defaultValue }, { it }, name, customPrefix)
+    IntentExtra.Parcelable(defaultValue: T, name: String? = null, customPrefix: String? = null): IntentPropertyDelegate<T> =
+    Parcelable<T, T>({ it ?: defaultValue }, { it }, name, customPrefix)
