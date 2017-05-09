@@ -11,6 +11,8 @@ android {
     compileSdkVersion 25
     buildToolsVersion "25.0.0"
 
+    compileOptions.kotlinOptions.freeCompilerArgs += ['-module-name', "$PUBLISH_GROUP_ID.$PUBLISH_ARTIFACT_ID"]
+
     defaultConfig {
         minSdkVersion 8
         targetSdkVersion 25
