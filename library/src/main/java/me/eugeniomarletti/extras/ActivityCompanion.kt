@@ -40,7 +40,7 @@ abstract class SelfActivityCompanion<out IntentOptions>(
 
     @Suppress("UNCHECKED_CAST")
     inline fun intent(context: Context, configure: IntentOptions.(Intent) -> Unit): Intent =
-            intent(context).apply { configure(this as IntentOptions, this) }
+            intent(context).apply { configure(this@SelfActivityCompanion as IntentOptions, this) }
 
     inline fun start(context: Context, configure: IntentOptions.(Intent) -> Unit) {
         context.startActivity(intent(context, configure))
