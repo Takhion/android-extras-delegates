@@ -33,3 +33,16 @@ abstract class ActivityCompanion<out IntentOptions>(
     inline fun <T> Intent.options(block: IntentOptions.(Intent) -> T): T =
         block(intentOptions, this)
 }
+
+abstract class SelfActivityCompanion<out IntentOptions>(
+        kclass: KClass<out Activity>
+) : SimpleActivityCompanion(kclass) {
+
+    @Suppress("UNCHECKED_CAST")
+    inline fun intent(context: Context, configure: IntentOptions.(Intent) -> Unit): Intent =
+            intent(context).apply { configure(this@SelfActivityCompanion as IntentOptions, this) }
+
+    inline fun start(context: Context, configure: IntentOptions.(Intent) -> Unit) {
+        context.startActivity(intent(context, configure))
+    }
+}
