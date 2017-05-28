@@ -177,7 +177,7 @@ This will read/write 3 extras:
 
 * `com.example.IntentOptions::currentUser::id` with type `Long`
 * `com.example.IntentOptions::currentUser::email` with type `String`
-* `com.example.IntentOptions::currentUser::birthday` with type `LocalDate`
+* `com.example.IntentOptions::currentUser::birthday` with type `LocalDate` ([which is actually `String`](#custom-types))
 
 Note that this is made possible by passing a custom prefix for the nested property names, which is going to be the default delegate name for the "super delegate" (in this case `com.example.IntentOptions::currentUser`).
 
