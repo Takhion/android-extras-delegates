@@ -14,7 +14,7 @@ abstract class SimpleFragmentCompanion(kclass: KClass<out Fragment>) {
 
     @PublishedApi internal val javaClass = kclass.java
 
-    inline fun instantiate(context: Context): Fragment = Fragment.instantiate(context, javaClass.name)
+    inline fun <reified F : Fragment> instantiate(context: Context): F = Fragment.instantiate(context, javaClass.name) as F
 }
 
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
@@ -23,9 +23,10 @@ abstract class FragmentCompanion<out BundleOptions>(
         kclass: KClass<out Fragment>
 ) : SimpleFragmentCompanion(kclass) {
 
-    inline fun instantiate(context: Context, configure: BundleOptions.(Bundle) -> Unit): Fragment {
-        val args = Bundle().apply { configure(bundleOptions, this) }
-        return Fragment.instantiate(context, javaClass.name, args)
+    inline fun <reified F : Fragment> instantiate(context: Context, configure: BundleOptions.(Bundle) -> Unit): F {
+        return instantiate<F>(context).apply {
+            arguments = Bundle().apply { configure(bundleOptions, this) }
+        }
     }
 
     inline fun <T> Bundle.options(block: BundleOptions.(Bundle) -> T): T =
@@ -38,9 +39,10 @@ abstract class SelfFragmentCompanion<out BundleOptions>(
 ) : SimpleFragmentCompanion(kclass) {
 
     @Suppress("UNCHECKED_CAST")
-    inline fun instantiate(context: Context, configure: BundleOptions.(Bundle) -> Unit): Fragment {
-        val args = Bundle().apply { configure(this@SelfFragmentCompanion as BundleOptions, this) }
-        return Fragment.instantiate(context, javaClass.name, args)
+    inline fun <reified F : Fragment> instantiate(context: Context, configure: BundleOptions.(Bundle) -> Unit): F {
+        return instantiate<F>(context).apply {
+            arguments = Bundle().apply { configure(this@SelfFragmentCompanion as BundleOptions, this) }
+        }
     }
 }
 
